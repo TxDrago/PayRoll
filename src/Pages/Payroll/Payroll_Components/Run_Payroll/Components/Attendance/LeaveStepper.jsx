@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Stepper,
   Step,
@@ -6,9 +6,15 @@ import {
   StepConnector,
   Typography,
   Box,
-  Button,
+  Modal,
+  Fade,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+
+// -------------- Icons -----------------
+import { CloseSquare } from "iconsax-react";
+
+// --------------- Local Import -----------------
 import LeaveApplied from "./Steps/LeaveApplied";
 import NoAttendance from "./Steps/NoAttendance";
 import LopSummary from "./Steps/LopSummary";
@@ -59,22 +65,46 @@ function CustomStepIcon(props) {
 const steps = ["Leave Applied", "No Attendance", "Lop Summary", "Lop Reversal"];
 
 export default function LeaveStepper() {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState(3);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  //---------------------------- Modal Open Button------------------------------------------------
+  const handleModal = () => {
+    setModalOpen(true);
+  };
+
+  //---------------------------- Modal Close Button------------------------------------------------
+  const handleClose = () => setModalOpen(false);
+
+  //---------------------------- Modal Next Step -------------------------------
+
+  const handleNextStep =()=>{
+    setModalOpen(false);
+    if (activeStep < steps.length - 1) setActiveStep((prev) => prev + 1);
+  }
 
   const handleNext = () => {
-    if (activeStep < steps.length - 1) setActiveStep((prev) => prev + 1);
+    if (activeStep != 1) {
+      if (activeStep < steps.length - 1) setActiveStep((prev) => prev + 1);
+    } else {
+      handleModal();
+    }
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-      return <LeaveApplied />;
+        return <LeaveApplied />;
       case 1:
-      return <NoAttendance />;
+        return <NoAttendance />;
       case 2:
-      return <LopSummary />;
+        return <LopSummary />;
       case 3:
-      return <LopReversal />;
+        return <LopReversal />;
       default:
         return null;
     }
@@ -91,7 +121,11 @@ export default function LeaveStepper() {
 
       {/* Stepper */}
       <div className="border-t-2 !border-gray-300 py-7 shadow-xl">
-       <Stepper activeStep={activeStep} alternativeLabel connector={<CustomConnector />} >
+        <Stepper
+          activeStep={activeStep}
+          alternativeLabel
+          connector={<CustomConnector />}
+        >
           {steps.map((label) => (
             <Step key={label}>
               <StepLabel
@@ -121,14 +155,81 @@ export default function LeaveStepper() {
       <Box className="py-10 px-8">{getStepContent(activeStep)}</Box>
 
       {/* Navigation Buttons */}
-      <div className="flex justify-end py-10 px-8">
+      <div className="flex justify-end py-10 px-8 gap-4">
+        {activeStep > 0 && (
+          <button
+            className="text-[14px] font-bold text-[#005377] font-[Poppins] py-3 px-6 bg-white rounded-sm border border-[#005377] cursor-pointer"
+            onClick={handleBack}
+          >
+            Back
+          </button>
+        )}
         <button
-          className="text-[14px] font-bold text-white font-[Poppins] py-3 px-6 bg-[#005377] rounded-sm"
+          className="text-[14px] font-bold text-white font-[Poppins] py-3 px-6 bg-[#005377] rounded-sm cursor-pointer"
           onClick={handleNext}
         >
-          Save & Continue
+          {activeStep===3?"Save & Finished":"Save & Continue"}
+          
         </button>
       </div>
+
+      {/* ----------------------------  Modal -------------------------- */}
+
+      <Modal open={modalOpen} onClose={handleClose} closeAfterTransition>
+        <Fade in={modalOpen}>
+          <div className="absolute left-1/2 top-1/2 w-[550px] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white px-6 py-4 focus:outline-none">
+            {/* Header */}
+            <div className="flex items-center justify-between rounded-md bg-white py-2 text-[#19396F]">
+              <Typography className="font-semibold">
+                Warnings: Days with No Attendance Logs
+              </Typography>
+              <CloseSquare
+                color="#19396F"
+                className="cursor-pointer"
+                onClick={handleClose}
+                size="24"
+              />
+            </div>
+
+            {/* Divider */}
+            <div className="w-full border-b border-gray-400 mt-6"></div>
+
+            {/* Body */}
+            <div className="mt-6 space-y-2">
+              <p className="text-sm font-semibold text-black font-[Poppins]">
+                There are 1031 days with no attendance logs.
+              </p>
+              <p className="text-sm font-normal text-black font-[Poppins]">
+                If you skip this steps, and manually override LOP, there might
+                be a mismatch between the actual leave/LOP days and LOP days
+                processed using payroll. It is recommended to take action
+                against all the days with ‘no attendance log’ to calculate
+                leave/LOP days count.
+              </p>
+            </div>
+            {/* Divider */}
+            <div className="w-full border-b border-gray-400 mt-6"></div>
+            {/* Footer Buttons */}
+            <div className="mt-6 flex justify-end gap-4">
+              <button
+                className="rounded-md border border-[#19396F] px-5 py-2 text-sm font-medium text-[#19396F] font-[Poppins] cursor-pointer"
+                onClick={handleNextStep}
+              >
+                Skip this step
+              </button>
+              <button
+                className="rounded-md bg-[#19396F] px-5 py-2 text-sm font-medium text-white font-[Poppins] cursor-pointer"
+                onClick={() => {
+                  // Add confirm logic here
+                  handleClose();
+                }}
+              >
+                Go Back
+              </button>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
     </div>
   );
 }

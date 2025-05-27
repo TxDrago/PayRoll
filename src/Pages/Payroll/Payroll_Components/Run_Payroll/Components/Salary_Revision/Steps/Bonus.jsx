@@ -1,22 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 // MUI Imports
 import { DataGrid } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
-import {
-  Button,
-  Box,
-  Card,
-  TextField,
-  Paper,
-  List,
-  ListItem,
-} from "@mui/material";
-
-import axios from "axios";
-
-// -------------- Icons -----------------
-import { Add, CloseSquare } from "iconsax-react";
+import { Box, Card, TextField,Button } from "@mui/material";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 // Local Import
 import CustomPagination from "../../../../../../../Components/Pagination";
@@ -27,18 +16,20 @@ const initialRows = [
     id: 1,
     employee: "Harsh Kumar",
     empId: "20020070",
-    lop_month:"July",
-    actual_lop: "3 days",
-    reversal_days: "",
+    pay_date: "12-Jul2024",
+    bonus_type: "3 days",
+    amount: "INR 1.00,706",
+    pay_action: "",
     comment: "",
   },
   {
     id: 2,
     employee: "Harsh Kumar",
     empId: "20020070",
-    lop_month:"Jan",
-    actual_lop: "3 days",
-    reversal_days: "",
+    doj: "12-Jul2024",
+    total_working_days: "3 days",
+    salary: "INR 1.00,706",
+    pay_action: "",
     comment: "",
   },
 ];
@@ -79,8 +70,7 @@ const StyledDataGrid = styled(DataGrid)(() => ({
 }));
 
 // Main Component
-const LopReversal = () => {
-  const [addEmp, setAddEmp] = useState(false);
+const Bonus = () => {
   const [searchText, setSearchText] = useState("");
   // Pagination state
   const [page, setPage] = useState(1);
@@ -88,13 +78,12 @@ const LopReversal = () => {
 
   const [rows, setRows] = useState([...initialRows]);
 
-const handleChange = (id, field, value) => {
-  setRows((prev) =>
-    prev.map((row) =>
+  const handleChange = (id, field, value) => {
+    const updatedRows = rows.map((row) =>
       row.id === id ? { ...row, [field]: value } : row
-    )
-  );
-};
+    );
+    setRows(updatedRows);
+  };
 
   // ---------------------- Table -------------------
   const columns = [
@@ -114,29 +103,55 @@ const handleChange = (id, field, value) => {
       },
     },
     {
-      field: "lop_month",
-      headerName: "Lop Month",
+      field: "pay_date",
+      headerName: "Payout Date",
       flex: 0.7,
-      renderCell: (params) => params.row.lop_month || "-",
+      renderCell: (params) => params.row.pay_date || "-",
     },
     {
-      field: "actual_lop",
-      headerName: "Actual Lop",
+      field: "bonus_type",
+      headerName: "Bonus Type",
       flex: 0.7,
-      renderCell: (params) => params.row.actual_lop || "-",
+      renderCell: (params) => params.row.bonus_type || "-",
     },
     {
-      field: "reversal_days",
-      headerName: "Lop Reversal Days",
+      field: "amount",
+      headerName: "Amount",
+      flex: 0.7,
+      renderCell: (params) => params.row.amount || "-",
+    },
+    {
+      field: "pay_action",
+      headerName: "Pay Action",
       flex: 1,
       renderCell: (params) => (
-        <div className="h-full flex justify-center items-center">
-          <TextField
+        <div className="h-full flex justify-center items-center w-full">
+          <Select
             size="small"
-            variant="outlined"
-            type="number"
-             defaultValue={params.value}
-          />
+            fullWidth
+            value={params.row.pay_action || ""} // Show current value or fallback to empty
+            onChange={(e) =>
+              handleChange(params.row.id, "pay_action", e.target.value)
+            }
+            displayEmpty // Enables showing "Select" for empty values
+            renderValue={(selected) => {
+              if (!selected) {
+                return "Select"; // Show placeholder
+              }
+              return selected;
+            }}
+          >
+            <MenuItem disabled value="">
+              Select
+            </MenuItem>
+            <MenuItem value="On Hold">On Hold</MenuItem>
+            <MenuItem value="Pay">Pay</MenuItem>
+            <MenuItem value="Void">Void (Never Pay)</MenuItem>
+            <MenuItem value="Paid Outside">
+              Paid Outside Igniculuss Payroll
+            </MenuItem>
+            <MenuItem value="Partially Pay">Partially Pay</MenuItem>
+          </Select>
         </div>
       ),
     },
@@ -153,11 +168,6 @@ const handleChange = (id, field, value) => {
           />
         </div>
       ),
-    }, {
-      field: "actions",
-      headerName: "Actions",
-      flex: 0.6,
-      sortable: false,
     },
   ];
 
@@ -185,115 +195,17 @@ const handleChange = (id, field, value) => {
     setPage(1); // Reset to first page
   };
 
-  // -------------------------------------------- Sample for search drop down -----------------------------------------------
-
-  const SearchDropdownContainer = ({ setAddEmp }) => {
-    const [query, setQuery] = useState("");
-    const [results, setResults] = useState([]);
-    const [showDropdown, setShowDropdown] = useState(false);
-
-    useEffect(() => {
-      const delayDebounce = setTimeout(() => {
-        if (query.trim()) {
-          const fetchResults = async () => {
-            try {
-              const response = await axios.get(
-                `https://jsonplaceholder.typicode.com/users`
-              );
-              const filtered = response.data.filter((user) =>
-                user.name.toLowerCase().includes(query.toLowerCase())
-              );
-              setResults(filtered);
-              setShowDropdown(true);
-            } catch (error) {
-              console.error("Error fetching users:", error);
-              setResults([]);
-              setShowDropdown(false);
-            }
-          };
-
-          fetchResults();
-        } else {
-          setResults([]);
-          setShowDropdown(false);
-        }
-      }, 300);
-
-      return () => clearTimeout(delayDebounce);
-    }, [query]);
-
-    // Onclick function to set query to selected item name and close dropdown
-    const handleSelect = (name) => {
-      setQuery(name);
-      setShowDropdown(false);
-    };
-
-    return (
-      <div
-        style={{ position: "relative", width: 400 }}
-        className="bg-[#CCCCCC] rounded-sm !border-0 flex justify-between items-center gap-2 px-2"
-      >
-        <TextField
-          fullWidth
-          size="small"
-          variant="outlined"
-          sx={{
-            "& .MuiOutlinedInput-notchedOutline": {
-              border: "none",
-            },
-          }}
-          placeholder="Type to search & choose employee"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <CloseSquare
-          onClick={() => setAddEmp(false)}
-          className="cursor-pointer"
-          size="26"
-          color="#989797"
-        />
-        {showDropdown && results.length > 0 && (
-          <Paper
-            elevation={3}
-            style={{
-              position: "absolute",
-              top: "100%",
-              width: "100%",
-              zIndex: 10,
-              maxHeight: 200,
-              overflowY: "auto",
-            }}
-          >
-            <List dense>
-              {results.map((item, index) => (
-                <ListItem
-                  key={index}
-                  button
-                  onClick={() => handleSelect(item.name)}
-                >
-                  {item?.name ||
-                    item?.title ||
-                    item?.label ||
-                    JSON.stringify(item)}
-                </ListItem>
-              ))}
-            </List>
-          </Paper>
-        )}
-      </div>
-    );
-  };
-
   return (
     <div className="flex flex-col gap-10">
       {/* Header */}
       <div className="w-full flex flex-col gap-6">
         <p className="text-[16px] font-medium text-black font-[Poppins]">
-          Loss of Pay reversal
+          Bonus
         </p>
         <div className="w-full bg-[#EBF1FF] border-2 border-[#005377] text-[#19396F] font-normal text-[16px] rounded-xl py-2 px-3 font-[Poppins]">
-          LOP reversal for all employees this month will be displayed below.
-          Admin can override LOP reversal days if needed.
+          All pending bonuses to be paid (including any past unpaid bonuses)
+          will be shown here. New Bonuses can also be added using ‘ Import
+          Bonuses’.
         </div>
       </div>
 
@@ -304,28 +216,21 @@ const handleChange = (id, field, value) => {
       >
         <div className="flex items-center justify-between mb-6 ">
           <div className="flex gap-3 items-center justify-between">
-            {addEmp === true ? (
-              <SearchDropdownContainer setAddEmp={setAddEmp} />
-            ) : (
-              <Button
-                onClick={() => setAddEmp(true)}
-                variant="contained"
-                size="small"
-                sx={{ bgcolor: "white", textTransform: "none" }}
-                className="!font-[Poppins] !border !border-[#19396F] !py-[10px] !px-[16px] !text-[#19396F] !font-bold !text-[14px] !rounded-lg !gap-2"
-              >
-                <Add size="18" color="#19396F" />
-                Add Employee
-              </Button>
-            )}
-            <p className="font-[Poppins]">OR</p>
             <Button
               variant="contained"
               size="small"
               sx={{ bgcolor: "white", textTransform: "none" }}
               className="!font-[Poppins] !border !border-[#19396F] !py-[10px] !px-[16px] !text-[#19396F] !font-bold !text-[14px] !rounded-lg !gap-2"
             >
-              Import LOP Reversal
+              Import Bonuses
+            </Button>
+            <Button
+              variant="contained"
+              size="small"
+              sx={{ bgcolor: "white", textTransform: "none" }}
+              className="!font-[Poppins] !border !border-[#19396F] !py-[10px] !px-[16px] !text-[#19396F] !font-bold !text-[14px] !rounded-lg !gap-2"
+            >
+              Import Bonus with Action
             </Button>
           </div>
           <input
@@ -366,4 +271,4 @@ const handleChange = (id, field, value) => {
   );
 };
 
-export default LopReversal;
+export default Bonus;
