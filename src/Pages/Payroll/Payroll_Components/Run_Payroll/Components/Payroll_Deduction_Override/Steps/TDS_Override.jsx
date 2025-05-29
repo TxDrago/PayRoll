@@ -11,12 +11,7 @@ import {
   Paper,
   List,
   ListItem,
-  Modal,
-  Fade,
-  Typography,
 } from "@mui/material";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 
 import axios from "axios";
 
@@ -25,7 +20,6 @@ import { Add, CloseSquare, Trash } from "iconsax-react";
 
 // Local Import
 import CustomPagination from "../../../../../../../Components/Pagination";
-import Modal_Table from "./Adhoc_Modal_Table/Modal_Table";
 
 // Sample Data
 const initialRows = [
@@ -33,17 +27,21 @@ const initialRows = [
     id: 1,
     employee: "Harsh Kumar",
     empId: "20020070",
-    Adhoc_Pay_Type: "",
-    Amount: "",
-    comment: "",
+   Gross_Salary:"INR 1,17,850",
+   Regular_PT:"200",
+   Amount:"",
+   Override_Month:"Nov 2024",
+   comment: "",
   },
   {
     id: 2,
     employee: "Harsh Kumar",
     empId: "20020070",
-    Adhoc_Pay_Type: "",
-    Amount: "",
-    comment: "",
+    Gross_Salary:"INR 1,17,850",
+   Regular_PT:"200",
+   Amount:"",
+   Override_Month:"Nov 2024",
+   comment: "",
   },
 ];
 
@@ -83,7 +81,7 @@ const StyledDataGrid = styled(DataGrid)(() => ({
 }));
 
 // Main Component
-const AdhocPayments = () => {
+const TDS_Override = () => {
   const [addEmp, setAddEmp] = useState(false);
   const [searchText, setSearchText] = useState("");
   // Pagination state
@@ -92,28 +90,19 @@ const AdhocPayments = () => {
 
   const [rows, setRows] = useState([...initialRows]);
 
-  const [modalOpen, setModalOpen] = useState(false);
-
-  //---------------------------- Modal Open Button------------------------------------------------
-  const handleModal = () => {
-    setModalOpen(true);
-  };
-
-  //---------------------------- Modal Close Button------------------------------------------------
-  const handleClose = () => setModalOpen(false);
 
   //---------------------------- Handle Change ---------------------
   const [inputValues, setInputValues] = useState({});
 
-const handleInputChange = (id, value) => {
-  const parsedValue = parseInt(value, 10);
-  if (!isNaN(parsedValue) || value === "") {
-    setInputValues((prev) => ({
-      ...prev,
-      [id]: value === "" ? "" : parsedValue,
-    }));
-  }
-};
+  const handleInputChange = (id, value) => {
+    const parsedValue = parseInt(value, 10);
+    if (!isNaN(parsedValue) || value === "") {
+      setInputValues((prev) => ({
+        ...prev,
+        [id]: value === "" ? "" : parsedValue,
+      }));
+    }
+  };
 
   const handleKeyDown = (e, id) => {
     if (e.key === "Enter") {
@@ -141,38 +130,38 @@ const handleInputChange = (id, value) => {
 
   // ---------------------- Table -------------------
   const columns = [
-    {
-      field: "employee",
-      headerName: "Employee",
+       {
+      field: "empId",
+      headerName: "Employee Number",
       flex: 1,
       renderCell: (params) => {
-        const employee = params.row.employee || "-";
         const empId = params.row.empId || "-";
         return (
-          <div className="flex flex-col leading-tight items-start justify-center h-full">
-            <span className="text-[#19396F] font-medium">{employee}</span>
-            <span className="text-xs text-[#818181]">{empId}</span>
-          </div>
+            <span className="text-xs text-[#818181]">{empId}</span>  
         );
       },
     },
     {
-      field: "Adhoc_Pay_Type",
-      headerName: "Adhoc Payment Type",
+      field: "employee",
+      headerName: "Employee Name",
       flex: 1,
-      renderCell: (params) => (
-        <div className="h-full flex justify-center items-center">
-          <TextField
-            size="small"
-            variant="outlined"
-            defaultValue={params.value}
-          />
-        </div>
-      ),
+     renderCell: (params) => params.row.employee || "-",
+    },
+     {
+      field: "Gross_Salary",
+      headerName: "Gross Salary",
+      flex: 0.7,
+      renderCell: (params) => params.row.Gross_Salary || "-",
+    },
+     {
+      field: "Regular_PT",
+      headerName: "Regular TDS",
+      flex: 0.7,
+      renderCell: (params) => params.row.Regular_PT || "-",
     },
     {
       field: "Amount",
-      headerName: "Amount",
+      headerName: "TDS Override Amount",
       flex: 1,
       renderCell: (params) => {
         const id = params.row.id;
@@ -193,6 +182,12 @@ const handleInputChange = (id, value) => {
           </div>
         );
       },
+    },
+    {
+      field: "Override_Month",
+      headerName: "Override Month",
+      flex: 0.7,
+      renderCell: (params) => params.row.Override_Month || "-",
     },
     {
       field: "comment",
@@ -355,11 +350,10 @@ const handleInputChange = (id, value) => {
       {/* Header */}
       <div className="w-full flex flex-col gap-6">
         <p className="text-[16px] font-medium text-black font-poppins">
-          Adhoc Payments
+          TDS Overrides
         </p>
         <div className="w-full bg-[#EBF1FF] border-2 border-[#005377] text-[#19396F] font-normal text-[16px] rounded-xl py-2 px-3 font-poppins">
-          Adhoc payments that are supposed to be paid to the employees in this
-          month, can be managed below.
+          The TDS overrides that were added for this month will be shown here. New overrides can be added as well from here
         </div>
       </div>
 
@@ -384,35 +378,7 @@ const handleInputChange = (id, value) => {
                 Add Employee
               </Button>
             )}
-            <p className="font-poppins">OR</p>
-            <Button
-              variant="contained"
-              size="small"
-              sx={{ bgcolor: "white", textTransform: "none" }}
-              className="!font-poppins !border !border-[#19396F] !py-[10px] !px-[16px] !text-[#19396F] !font-bold !text-[14px] !rounded-lg !gap-2"
-              onClick={() => setModalOpen(true)}
-            >
-              Import Data From Previous Month
-            </Button>
-            <p className="font-poppins">OR</p>
-            <Button
-              variant="contained"
-              size="small"
-              sx={{ bgcolor: "white", textTransform: "none" }}
-              className="!font-poppins !border !border-[#19396F] !py-[10px] !px-[16px] !text-[#19396F] !font-bold !text-[14px] !rounded-lg !gap-2"
-            >
-              Import Adhoc Payments
-            </Button>
-            <Button
-              onClick={handleModal}
-              variant="contained"
-              size="small"
-              sx={{ bgcolor: "white", textTransform: "none" }}
-              className="!font-poppins !border !border-gray-200 !py-[10px] !px-[16px] !text-[#B44839] !font-bold !text-[14px] !rounded-lg !gap-2"
-            >
-              <Trash size="18" color="#B44839" variant="Bold" />
-              Delete
-            </Button>
+          
           </div>
           <input
             type="text"
@@ -449,52 +415,8 @@ const handleInputChange = (id, value) => {
         />
       </Card>
 
-      {/* ----------------------------  Modal -------------------------- */}
-
-      <Modal open={modalOpen} onClose={handleClose} closeAfterTransition>
-        <Fade in={modalOpen}>
-          <div className="absolute left-1/2 top-1/2 max-h-[90vh] overflow-y-auto w-[550px] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white px-6 py-4 focus:outline-none">
-            {/* Header */}
-            <div className="flex items-center justify-between rounded-md bg-white py-2 text-[#000000]">
-              <Typography className="font-medium !text-[16px]">
-                Import Previous Adhoc Payments
-              </Typography>
-              <CloseSquare
-                color="#19396F"
-                className="cursor-pointer"
-                onClick={handleClose}
-                size="24"
-              />
-            </div>
-
-            {/* Body */}
-            <div className="py-2">
-              <Modal_Table />
-            </div>
-
-            {/* Footer Buttons */}
-            <div className="mt-6 flex justify-end gap-4">
-              <button
-                className="rounded-md border border-[#005377] px-6 py-3 text-sm font-medium text-[#19396F] font-poppins cursor-pointer"
-                onClick={handleClose}
-              >
-                Cancel
-              </button>
-              <button
-                className="rounded-md bg-[#005377] px-6 py-3 text-sm font-medium text-white font-poppins cursor-pointer"
-                onClick={() => {
-                  // Add confirm logic here
-                  handleClose();
-                }}
-              >
-                Import
-              </button>
-            </div>
-          </div>
-        </Fade>
-      </Modal>
     </div>
   );
 };
 
-export default AdhocPayments;
+export default TDS_Override;

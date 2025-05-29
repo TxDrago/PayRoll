@@ -100,7 +100,7 @@ export default function PayrollGroup() {
     <div className="flex flex-col gap-10">
       {/* ----------------------------- Heading ----------------------------------- */}
       <div className="flex flex-col gap-3">
-        <p className="font-[Poppins] font-semibold text-[20px]">
+        <p className="font-poppins font-semibold text-[20px]">
           Payroll Group
         </p>
         <p className="font-poppins text-base font-normal">

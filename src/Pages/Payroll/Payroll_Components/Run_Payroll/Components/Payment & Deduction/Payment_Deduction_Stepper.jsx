@@ -5,6 +5,8 @@ import { styled } from "@mui/material/styles";
 // --------------- Local Import -----------------
 import Claim from "./Steps/Claim";
 import Expenses from "./Steps/Expenses";
+import AdhocPayments from "./Steps/AdhocPayments";
+import AdhocDeduction from "./Steps/AdhocDeduction";
 
 // Connector styling
 const CustomConnector = styled(StepConnector)(({ theme }) => ({
@@ -56,7 +58,7 @@ const steps = [
 ];
 
 export default function Payment_Deduction_Stepper() {
-  const [activeStep, setActiveStep] = React.useState(1);
+  const [activeStep, setActiveStep] = React.useState(3);
 
   const handleNext = () => {
     if (activeStep < steps.length - 1) setActiveStep((prev) => prev + 1);
@@ -72,10 +74,10 @@ export default function Payment_Deduction_Stepper() {
         return <Claim />;
       case 1:
         return <Expenses />;
-    //   case 2:
-    //     return <Overtime />;
-    //   case 3:
-    //     return <ShiftAllowance />;
+      case 2:
+        return <AdhocPayments />;
+      case 3:
+        return <AdhocDeduction />;
       default:
         return null;
     }
@@ -85,7 +87,7 @@ export default function Payment_Deduction_Stepper() {
     <div className="w-full bg-white py-10">
       {/* Header */}
       <div className="px-8 mb-5">
-        <h2 className="text-lg font-medium text-black font-[Poppins]">
+        <h2 className="text-lg font-medium text-black font-poppins">
           Reimbursement, Adhoc Payment & Deduction
         </h2>
       </div>
@@ -129,14 +131,14 @@ export default function Payment_Deduction_Stepper() {
       <div className="flex justify-end py-10 px-8 gap-4">
         {activeStep > 0 && (
           <button
-            className="text-[14px] font-bold text-[#005377] font-[Poppins] py-3 px-6 bg-white rounded-sm border border-[#005377] cursor-pointer"
+            className="text-[14px] font-bold text-[#005377] font-poppins py-3 px-6 bg-white rounded-sm border border-[#005377] cursor-pointer"
             onClick={handleBack}
           >
             Back
           </button>
         )}
         <button
-          className="text-[14px] font-bold text-white font-[Poppins] py-3 px-6 bg-[#005377] rounded-sm cursor-pointer"
+          className="text-[14px] font-bold text-white font-poppins py-3 px-6 bg-[#005377] rounded-sm cursor-pointer"
           onClick={handleNext}
         >
           {activeStep === 3 ? "Save & Finished" : "Save & Continue"}

@@ -2,20 +2,21 @@ import React from "react";
 import { Tabs, Tab, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import clsx from "clsx";
-import PayrollGroup from "./Run_Payroll/PayrollGroup";
-import Payroll_Analytics_Tabs from "./Payroll_ Analytics/Payroll_Analytics_Tabs";
-import Loans from "./Loans/Loans";
+
+// ------------------- Local Import ------------------------
+import AnalyticsDashboard from "./Components/Analytics/AnalyticsDashboard";
+import Compensation_Planning from "./Components/Compensation_Planning/Compensation_Planning";
+import Compare_Compensation from "./Components/Compare_Compensation_Costs/Compare_Compensation";
+import Employee_Competitiveness from "./Components/Employee_Competitiveness/Employee_Competitiveness";
+import Geographical_Differentials from "./Components/Geographical_Differentials/Geographical_Differentials";
 
 // Styled MUI Tab
 const CustomTab = styled(Tab)(() => ({
-  minHeight: "auto",
-  padding: "0.5rem 1rem",
-  borderRadius: "0.375rem",
-  textTransform: "none",
+  // minHeight: "auto",
+  padding: "10px",
+  // textTransform: "none",
   fontWeight: 500,
   fontSize: "0.875rem",
-  border: "1px solid #d1d5db",
- 
 }));
 
 // TabPanel component
@@ -27,7 +28,7 @@ function TabPanel({ children, value, index }) {
   );
 }
 
-export default function PayrollTabs() {
+export default function Payroll_Analytics_Tabs() {
   const [value, setValue] = React.useState(4); // Default: "Run Payroll"
 
   const handleChange = (event, newValue) => {
@@ -35,19 +36,17 @@ export default function PayrollTabs() {
   };
 
   const tabs = [
-    "Payroll Analytics",
-    "Run Payroll",
-    "Payroll Admin",
-    "Approvals",
-    "Loans",
-    "Benefits",
-    "Reports",
-    "Settings",
+    "Analytics",
+    "Compensation Planning",
+    "Compare Compensation Costs",
+    "Employee Competitiveness",
+    "Geographical Differentials",
   ];
 
   return (
     <div className="w-full ">
       {/* Tabs */}
+       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
       <Tabs
         value={value}
         variant="scrollable"
@@ -57,7 +56,7 @@ export default function PayrollTabs() {
         // TabIndicatorProps={{ style: { display: "" } }}
         sx={{
           "& .MuiTabs-flexContainer": {
-            gap: "1rem", // Change to your desired spacing
+            gap: "1rem",
           },
         }}
       >
@@ -69,12 +68,13 @@ export default function PayrollTabs() {
             className={clsx(
               "transition-colors duration-200 ",
               index === value
-                ? "!bg-[#004C74] !text-white !border-[#004C74]"
-                : "!bg-white text-gray-700 hover:bg-gray-100"
+                ? " !text-[#005377] "
+                : " text-gray-700 hover:bg-gray-400"
             )}
           />
         ))}
       </Tabs>
+      </Box>
 
       {/* TabPanels */}
       {tabs.map((label, index) => (
@@ -83,44 +83,26 @@ export default function PayrollTabs() {
             switch (index) {
               case 0:
                 return (
-                  <div>
-                    <Payroll_Analytics_Tabs />
+                  <div >
+                  <AnalyticsDashboard />
                   </div>
                 );
               case 1:
-                return (
-                  <div>
-                    <PayrollGroup />
-                  </div>
-                );
+                return (<div><Compensation_Planning /></div>);
               case 2:
                 return (
-                  <div className="text-gray-700">👤 Payroll Admin Controls</div>
+                  <div><Compare_Compensation /></div>
                 );
               case 3:
                 return (
-                  <div className="text-gray-700">
-                    ✅ Approvals List or Workflow
+                  <div >
+               <Employee_Competitiveness />
                   </div>
                 );
               case 4:
                 return (
-                  <div className="text-gray-700"><Loans /></div>
+                  <div ><Geographical_Differentials /></div>
                 );
-              case 5:
-                return (
-                  <div className="text-gray-700">
-                    🎁 Employee Benefits Overview
-                  </div>
-                );
-              case 6:
-                return (
-                  <div className="text-gray-700">
-                    📄 Payroll Reports Section
-                  </div>
-                );
-              case 7:
-                return <div className="text-gray-700">⚙️ Settings Panel</div>;
               default:
                 return null;
             }

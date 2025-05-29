@@ -88,7 +88,7 @@ export default function SalaryRevisionStepper() {
     <div className="w-full bg-white py-10">
       {/* Header */}
       <div className="px-8 mb-5">
-        <h2 className="text-lg font-medium text-black font-[Poppins]">
+        <h2 className="text-lg font-medium text-black font-poppins">
           Bonus, Salary Revisions & Overtime
         </h2>
       </div>
@@ -132,14 +132,14 @@ export default function SalaryRevisionStepper() {
       <div className="flex justify-end py-10 px-8 gap-4">
         {activeStep > 0 && (
           <button
-            className="text-[14px] font-bold text-[#005377] font-[Poppins] py-3 px-6 bg-white rounded-sm border border-[#005377] cursor-pointer"
+            className="text-[14px] font-bold text-[#005377] font-poppins py-3 px-6 bg-white rounded-sm border border-[#005377] cursor-pointer"
             onClick={handleBack}
           >
             Back
           </button>
         )}
         <button
-          className="text-[14px] font-bold text-white font-[Poppins] py-3 px-6 bg-[#005377] rounded-sm cursor-pointer"
+          className="text-[14px] font-bold text-white font-poppins py-3 px-6 bg-[#005377] rounded-sm cursor-pointer"
           onClick={handleNext}
         >
           {activeStep === 3 ? "Save & Finished" : "Save & Continue"}

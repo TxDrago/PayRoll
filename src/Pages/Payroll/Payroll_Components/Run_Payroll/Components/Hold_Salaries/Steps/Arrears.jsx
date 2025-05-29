@@ -3,7 +3,7 @@ import React, { useState } from "react";
 // MUI Imports
 import { DataGrid } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
-import { Box, Card, TextField,Button } from "@mui/material";
+import { Box, Card, TextField, Button } from "@mui/material";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
@@ -16,21 +16,17 @@ const initialRows = [
     id: 1,
     employee: "Harsh Kumar",
     empId: "20020070",
-    month: "Nov 2024",
-    cal_amount: "INR 1,800",
-    adj_amount: "",
-    pay_action: "",
-    payable: "",
+    doj: "10 Nov 2024",
+    Amount: "",
+    reason: "...............",
   },
   {
     id: 2,
     employee: "Harsh Kumar",
     empId: "20020070",
-   month: "Nov 2024",
-    cal_amount: "INR 1,800",
-    adj_amount: "",
-    pay_action: "",
-    payable: "",
+    doj: "10 Nov 2024",
+    Amount: "",
+    reason: "...............",
   },
 ];
 
@@ -70,7 +66,7 @@ const StyledDataGrid = styled(DataGrid)(() => ({
 }));
 
 // Main Component
-const Overtime = () => {
+const Arrears = () => {
   const [searchText, setSearchText] = useState("");
   // Pagination state
   const [page, setPage] = useState(1);
@@ -78,31 +74,27 @@ const Overtime = () => {
 
   const [rows, setRows] = useState([...initialRows]);
 
-    const [inputValues, setInputValues] = useState({});
+  //---------------------------- Handle Change ---------------------
+  const [inputValues, setInputValues] = useState({});
 
   const handleInputChange = (id, value) => {
-    setInputValues((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
+    const parsedValue = parseInt(value, 10);
+    if (!isNaN(parsedValue) || value === "") {
+      setInputValues((prev) => ({
+        ...prev,
+        [id]: value === "" ? "" : parsedValue,
+      }));
+    }
   };
 
-  const handleChange = (id, field, value) => {
-    const updatedRows = rows.map((row) =>
-      row.id === id ? { ...row, [field]: value } : row
-    );
-    setRows(updatedRows);
-  };
-
-   const handleKeyDown = (e, id) => {
+  const handleKeyDown = (e, id) => {
     if (e.key === "Enter") {
       const value = inputValues[id] ?? "";
       const updatedRows = rows.map((row) =>
         row.id === id
           ? {
               ...row,
-              adj_amount: value,
-              payable: value,
+              Amount: value,
             }
           : row
       );
@@ -130,25 +122,19 @@ const Overtime = () => {
       },
     },
     {
-      field: "month",
-      headerName: "Month",
+      field: "doj",
+      headerName: "Date Joined",
       flex: 0.7,
-      renderCell: (params) => params.row.month || "-",
+      renderCell: (params) => params.row.doj || "-",
     },
     {
-      field: "cal_amount",
-      headerName: "Calculated Amount",
-      flex: 0.7,
-      renderCell: (params) => params.row.cal_amount || "-",
-    },
- {
-      field: "adj_amount",
-      headerName: "Adjusted Amount",
+      field: "Amount",
+      headerName: "Total Arrear Amount",
       flex: 1,
       renderCell: (params) => {
         const id = params.row.id;
         const tempValue =
-          inputValues[id] !== undefined ? inputValues[id] : params.row.adj_amount;
+          inputValues[id] !== undefined ? inputValues[id] : params.row.Amount;
 
         return (
           <div className="flex items-center w-full">
@@ -166,43 +152,10 @@ const Overtime = () => {
       },
     },
     {
-      field: "pay_action",
-      headerName: "Pay Action",
-      flex: 1,
-      renderCell: (params) => (
-        <div className="h-full flex justify-center items-center w-full">
-          <Select
-            size="small"
-            fullWidth
-            value={params.row.pay_action || ""} // Show current value or fallback to empty
-            onChange={(e) =>
-              handleChange(params.row.id, "pay_action", e.target.value)
-            }
-            displayEmpty // Enables showing "Select" for empty values
-            renderValue={(selected) => {
-              if (!selected) {
-                return "Select"; // Show placeholder
-              }
-              return selected;
-            }}
-          >
-            <MenuItem disabled value="">
-              Select
-            </MenuItem>
-            <MenuItem value="Pay Out">Pay Out</MenuItem>
-            <MenuItem value="Pay">Pay</MenuItem>
-            <MenuItem value="Void">Void (Never Pay)</MenuItem>
-          </Select>
-        </div>
-      ),
-    },
-     {
-      field: "payable",
-      headerName: "Payable Amount",
-      flex: 1,
-      renderCell: (params) => (
-        <div>INR {params.row.payable || "0"}</div>
-      ),
+      field: "reason",
+      headerName: "Reason",
+      flex: 0.7,
+      renderCell: (params) => params.row.reason || "-",
     },
   ];
 
@@ -235,10 +188,12 @@ const Overtime = () => {
       {/* Header */}
       <div className="w-full flex flex-col gap-6">
         <p className="text-[16px] font-medium text-black font-poppins">
-          Overtime Payments
+          Arrears
         </p>
         <div className="w-full bg-[#EBF1FF] border-2 border-[#005377] text-[#19396F] font-normal text-[16px] rounded-xl py-2 px-3 font-poppins">
-          Overtime details, including amount and OT dates will be displayed here (only if OT policies are configured and assigned to the employees). Overtime payments on hold due to salary hold will be shown here. However, overtime approved after payroll finalization will not be carried over this months.
+          Employee's arrears either due to past dated revisions, salary on
+          holds, LOP reversal or due to arrear LOP Recovery will be displayed
+          here
         </div>
       </div>
 
@@ -247,17 +202,7 @@ const Overtime = () => {
         style={{ boxShadow: "0px 0px 12px 0px rgba(0, 0, 0, 0.16)" }}
         className="!p-5 !bg-white !rounded-lg !w-full "
       >
-        <div className="flex items-center justify-between mb-6 ">
-          <div className="flex gap-3 items-center justify-between">
-            <Button
-              variant="contained"
-              size="small"
-              sx={{ bgcolor: "white", textTransform: "none" }}
-              className="!font-poppins !border !border-[#19396F] !py-[10px] !px-[16px] !text-[#19396F] !font-bold !text-[14px] !rounded-lg !gap-2"
-            >
-              Import Overtime Adjusted Amount
-            </Button>
-          </div>
+        <div className="flex items-center justify-end mb-6 ">
           <input
             type="text"
             placeholder="Search by Emp/no name"
@@ -296,4 +241,4 @@ const Overtime = () => {
   );
 };
 
-export default Overtime;
+export default Arrears;

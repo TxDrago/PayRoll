@@ -13,7 +13,7 @@ const Expenses = () => {
     <SalaryComponentClaim />
   </div>
   <div>
-    {/* <Advance_Expense /> */}
+    <Advance_Expense />
   </div>
     </div>
   );

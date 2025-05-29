@@ -250,10 +250,10 @@ const ShiftAllowance = () => {
     <div className="flex flex-col gap-10">
       {/* Header */}
       <div className="w-full flex flex-col gap-6">
-        <p className="text-[16px] font-medium text-black font-[Poppins]">
+        <p className="text-[16px] font-medium text-black font-poppins">
          Shift Allowance
         </p>
-        <div className="w-full bg-[#EBF1FF] border-2 border-[#005377] text-[#19396F] font-normal text-[16px] rounded-xl py-2 px-3 font-[Poppins]">
+        <div className="w-full bg-[#EBF1FF] border-2 border-[#005377] text-[#19396F] font-normal text-[16px] rounded-xl py-2 px-3 font-poppins">
         Shift allowance details, including amount and attendance dates will be displayed here (only if shift allowance policies are configured and assigned to the employee). Any pending shift allowance payments from past months will also be displayed here.
         </div>
       </div>
@@ -269,7 +269,7 @@ const ShiftAllowance = () => {
               variant="contained"
               size="small"
               sx={{ bgcolor: "white", textTransform: "none" }}
-              className="!font-[Poppins] !border !border-[#19396F] !py-[10px] !px-[16px] !text-[#19396F] !font-bold !text-[14px] !rounded-lg !gap-2"
+              className="!font-poppins !border !border-[#19396F] !py-[10px] !px-[16px] !text-[#19396F] !font-bold !text-[14px] !rounded-lg !gap-2"
             >
               Import Overtime Adjusted Amount
             </Button>

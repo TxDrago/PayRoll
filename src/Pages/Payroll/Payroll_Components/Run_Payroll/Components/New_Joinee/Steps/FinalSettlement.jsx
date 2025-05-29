@@ -10,7 +10,7 @@ const FinalSettlement = () => {
     <div className="flex flex-col gap-10">
       {/* Header */}
       <div className="w-full flex flex-col gap-6">
-        <div className="w-full bg-[#EBF1FF] border-2 border-[#005377] text-[#19396F] font-normal text-[16px] rounded-xl py-2 px-3 font-[Poppins]">
+        <div className="w-full bg-[#EBF1FF] border-2 border-[#005377] text-[#19396F] font-normal text-[16px] rounded-xl py-2 px-3 font-poppins">
           Employees whose exit has been approved and are serving notice period
           will be shown under ‘Employee in Exit Process’. If there are any exit
           requests that are yet to be approved but last working date fails under

@@ -114,7 +114,7 @@ export default function LeaveStepper() {
     <div className="w-full bg-white py-10">
       {/* Header */}
       <div className="px-8 mb-5">
-        <h2 className="text-lg font-medium text-black font-[Poppins]">
+        <h2 className="text-lg font-medium text-black font-poppins">
           Leave, Attendance & Payable Units: APR-2025
         </h2>
       </div>
@@ -158,14 +158,14 @@ export default function LeaveStepper() {
       <div className="flex justify-end py-10 px-8 gap-4">
         {activeStep > 0 && (
           <button
-            className="text-[14px] font-bold text-[#005377] font-[Poppins] py-3 px-6 bg-white rounded-sm border border-[#005377] cursor-pointer"
+            className="text-[14px] font-bold text-[#005377] font-poppins py-3 px-6 bg-white rounded-sm border border-[#005377] cursor-pointer"
             onClick={handleBack}
           >
             Back
           </button>
         )}
         <button
-          className="text-[14px] font-bold text-white font-[Poppins] py-3 px-6 bg-[#005377] rounded-sm cursor-pointer"
+          className="text-[14px] font-bold text-white font-poppins py-3 px-6 bg-[#005377] rounded-sm cursor-pointer"
           onClick={handleNext}
         >
           {activeStep===3?"Save & Finished":"Save & Continue"}
@@ -196,10 +196,10 @@ export default function LeaveStepper() {
 
             {/* Body */}
             <div className="mt-6 space-y-2">
-              <p className="text-sm font-semibold text-black font-[Poppins]">
+              <p className="text-sm font-semibold text-black font-poppins">
                 There are 1031 days with no attendance logs.
               </p>
-              <p className="text-sm font-normal text-black font-[Poppins]">
+              <p className="text-sm font-normal text-black font-poppins">
                 If you skip this steps, and manually override LOP, there might
                 be a mismatch between the actual leave/LOP days and LOP days
                 processed using payroll. It is recommended to take action
@@ -212,13 +212,13 @@ export default function LeaveStepper() {
             {/* Footer Buttons */}
             <div className="mt-6 flex justify-end gap-4">
               <button
-                className="rounded-md border border-[#19396F] px-5 py-2 text-sm font-medium text-[#19396F] font-[Poppins] cursor-pointer"
+                className="rounded-md border border-[#19396F] px-5 py-2 text-sm font-medium text-[#19396F] font-poppins cursor-pointer"
                 onClick={handleNextStep}
               >
                 Skip this step
               </button>
               <button
-                className="rounded-md bg-[#19396F] px-5 py-2 text-sm font-medium text-white font-[Poppins] cursor-pointer"
+                className="rounded-md bg-[#19396F] px-5 py-2 text-sm font-medium text-white font-poppins cursor-pointer"
                 onClick={() => {
                   // Add confirm logic here
                   handleClose();

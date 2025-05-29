@@ -1,11 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // MUI Imports
 import { DataGrid } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
-import { Box, Card, TextField,Button } from "@mui/material";
+import {
+  Button,
+  Box,
+  Card,
+  TextField,
+  Paper,
+  List,
+  ListItem,
+} from "@mui/material";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+
+import axios from "axios";
+
+// -------------- Icons -----------------
+import { Add, CloseSquare, Trash } from "iconsax-react";
 
 // Local Import
 import CustomPagination from "../../../../../../../Components/Pagination";
@@ -16,21 +29,19 @@ const initialRows = [
     id: 1,
     employee: "Harsh Kumar",
     empId: "20020070",
-    month: "Nov 2024",
-    cal_amount: "INR 1,800",
-    adj_amount: "",
+    pay_date: "12-Jul2024",
+    amount: "INR 1.00,706",
     pay_action: "",
-    payable: "",
+    comment: "",
   },
   {
     id: 2,
     employee: "Harsh Kumar",
     empId: "20020070",
-   month: "Nov 2024",
-    cal_amount: "INR 1,800",
-    adj_amount: "",
+    pay_date: "12-Jul2024",
+    amount: "INR 1.00,706",
     pay_action: "",
-    payable: "",
+    comment: "",
   },
 ];
 
@@ -70,7 +81,8 @@ const StyledDataGrid = styled(DataGrid)(() => ({
 }));
 
 // Main Component
-const Overtime = () => {
+const SalaryPayout = () => {
+  const [addEmp, setAddEmp] = useState(false);
   const [searchText, setSearchText] = useState("");
   // Pagination state
   const [page, setPage] = useState(1);
@@ -78,15 +90,7 @@ const Overtime = () => {
 
   const [rows, setRows] = useState([...initialRows]);
 
-    const [inputValues, setInputValues] = useState({});
-
-  const handleInputChange = (id, value) => {
-    setInputValues((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
-  };
-
+  //---------------------------- Handle Change ---------------------
   const handleChange = (id, field, value) => {
     const updatedRows = rows.map((row) =>
       row.id === id ? { ...row, [field]: value } : row
@@ -94,24 +98,12 @@ const Overtime = () => {
     setRows(updatedRows);
   };
 
-   const handleKeyDown = (e, id) => {
-    if (e.key === "Enter") {
-      const value = inputValues[id] ?? "";
-      const updatedRows = rows.map((row) =>
-        row.id === id
-          ? {
-              ...row,
-              adj_amount: value,
-              payable: value,
-            }
-          : row
-      );
-      setRows(updatedRows);
+  //----------------------- Table Action Icon Functions -----------------------
 
-      // Optional: clear input buffer for that cell
-      setInputValues((prev) => ({ ...prev, [id]: value }));
-    }
+  const handleReject = (row) => {
+    console.log("Reject clicked:", row);
   };
+
   // ---------------------- Table -------------------
   const columns = [
     {
@@ -130,40 +122,16 @@ const Overtime = () => {
       },
     },
     {
-      field: "month",
-      headerName: "Month",
+      field: "pay_date",
+      headerName: "Pay Period",
       flex: 0.7,
-      renderCell: (params) => params.row.month || "-",
+      renderCell: (params) => params.row.pay_date || "-",
     },
     {
-      field: "cal_amount",
-      headerName: "Calculated Amount",
+      field: "amount",
+      headerName: "Amount",
       flex: 0.7,
-      renderCell: (params) => params.row.cal_amount || "-",
-    },
- {
-      field: "adj_amount",
-      headerName: "Adjusted Amount",
-      flex: 1,
-      renderCell: (params) => {
-        const id = params.row.id;
-        const tempValue =
-          inputValues[id] !== undefined ? inputValues[id] : params.row.adj_amount;
-
-        return (
-          <div className="flex items-center w-full">
-            <span className="mr-1">INR</span>
-            <TextField
-              size="small"
-              variant="outlined"
-              value={tempValue}
-              onChange={(e) => handleInputChange(id, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(e, id)}
-              fullWidth
-            />
-          </div>
-        );
-      },
+      renderCell: (params) => params.row.amount || "-",
     },
     {
       field: "pay_action",
@@ -189,20 +157,43 @@ const Overtime = () => {
             <MenuItem disabled value="">
               Select
             </MenuItem>
-            <MenuItem value="Pay Out">Pay Out</MenuItem>
-            <MenuItem value="Pay">Pay</MenuItem>
+            <MenuItem value="Process">Process as salary</MenuItem>
+            <MenuItem value="Hold">Hold Salary processing</MenuItem>
             <MenuItem value="Void">Void (Never Pay)</MenuItem>
           </Select>
         </div>
       ),
     },
-     {
-      field: "payable",
-      headerName: "Payable Amount",
-      flex: 1,
+    {
+      field: "comment",
+      headerName: "Comment",
+      flex: 1.5,
       renderCell: (params) => (
-        <div>INR {params.row.payable || "0"}</div>
+        <div className="h-full flex justify-center items-center">
+          <TextField
+            size="small"
+            variant="outlined"
+            defaultValue={params.value}
+          />
+        </div>
       ),
+    },
+    {
+      field: "Action",
+      headerName: "Action",
+      flex: 0.7,
+      renderCell: (params) => {
+        return (
+          <div className="flex items-center justify-center gap-2 h-full">
+            <Trash
+              size="24"
+              color="#FF5151"
+              className="cursor-pointer"
+              onClick={() => handleReject(params.row)}
+            />
+          </div>
+        );
+      },
     },
   ];
 
@@ -230,15 +221,120 @@ const Overtime = () => {
     setPage(1); // Reset to first page
   };
 
+  // -------------------------------------------- Sample for search drop down -----------------------------------------------
+
+  const SearchDropdownContainer = ({ setAddEmp }) => {
+    const [query, setQuery] = useState("");
+    const [results, setResults] = useState([]);
+    const [showDropdown, setShowDropdown] = useState(false);
+
+    useEffect(() => {
+      const delayDebounce = setTimeout(() => {
+        if (query.trim()) {
+          const fetchResults = async () => {
+            try {
+              const response = await axios.get(
+                `https://jsonplaceholder.typicode.com/users`
+              );
+              const filtered = response.data.filter((user) =>
+                user.name.toLowerCase().includes(query.toLowerCase())
+              );
+              setResults(filtered);
+              setShowDropdown(true);
+            } catch (error) {
+              console.error("Error fetching users:", error);
+              setResults([]);
+              setShowDropdown(false);
+            }
+          };
+
+          fetchResults();
+        } else {
+          setResults([]);
+          setShowDropdown(false);
+        }
+      }, 300);
+
+      return () => clearTimeout(delayDebounce);
+    }, [query]);
+
+    // Onclick function to set query to selected item name and close dropdown
+    const handleSelect = (name) => {
+      setQuery(name);
+      setShowDropdown(false);
+    };
+
+    return (
+      <div
+        style={{ position: "relative", width: 400 }}
+        className="bg-[#CCCCCC] rounded-sm !border-0 flex justify-between items-center gap-2 px-2"
+      >
+        <TextField
+          fullWidth
+          size="small"
+          variant="outlined"
+          sx={{
+            "& .MuiOutlinedInput-notchedOutline": {
+              border: "none",
+            },
+          }}
+          placeholder="Type to search & choose employee"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <CloseSquare
+          onClick={() => setAddEmp(false)}
+          className="cursor-pointer"
+          size="26"
+          color="#989797"
+        />
+        {showDropdown && results.length > 0 && (
+          <Paper
+            elevation={3}
+            style={{
+              position: "absolute",
+              top: "100%",
+              width: "100%",
+              zIndex: 10,
+              maxHeight: 200,
+              overflowY: "auto",
+            }}
+          >
+            <List dense>
+              {results.map((item, index) => (
+                <ListItem
+                  key={index}
+                  button
+                  onClick={() => handleSelect(item.name)}
+                >
+                  {item?.name ||
+                    item?.title ||
+                    item?.label ||
+                    JSON.stringify(item)}
+                </ListItem>
+              ))}
+            </List>
+          </Paper>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="flex flex-col gap-10">
       {/* Header */}
       <div className="w-full flex flex-col gap-6">
         <p className="text-[16px] font-medium text-black font-poppins">
-          Overtime Payments
+          Salary payout on hold
         </p>
         <div className="w-full bg-[#EBF1FF] border-2 border-[#005377] text-[#19396F] font-normal text-[16px] rounded-xl py-2 px-3 font-poppins">
-          Overtime details, including amount and OT dates will be displayed here (only if OT policies are configured and assigned to the employees). Overtime payments on hold due to salary hold will be shown here. However, overtime approved after payroll finalization will not be carried over this months.
+          In case you wish to process the salary but hold the payout of
+          employees (in cases such as, employee is under notice period, on
+          uninformed leave for a while, etc) use "Salary payout on hold" option.
+          The salary of such employees will be processed, i.e. they will be
+          included for statutory contribution/ deduction calculation and only
+          the payout of salary will be put on hold. You can decide to payout
+          this salary anytime in future.
         </div>
       </div>
 
@@ -249,13 +345,28 @@ const Overtime = () => {
       >
         <div className="flex items-center justify-between mb-6 ">
           <div className="flex gap-3 items-center justify-between">
+            {addEmp === true ? (
+              <SearchDropdownContainer setAddEmp={setAddEmp} />
+            ) : (
+              <Button
+                onClick={() => setAddEmp(true)}
+                variant="contained"
+                size="small"
+                sx={{ bgcolor: "white", textTransform: "none" }}
+                className="!font-poppins !border !border-[#19396F] !py-[10px] !px-[16px] !text-[#19396F] !font-bold !text-[14px] !rounded-lg !gap-2"
+              >
+                <Add size="18" color="#19396F" />
+                Add Employee
+              </Button>
+            )}
+            <p className="font-poppins">OR</p>
             <Button
               variant="contained"
               size="small"
               sx={{ bgcolor: "white", textTransform: "none" }}
               className="!font-poppins !border !border-[#19396F] !py-[10px] !px-[16px] !text-[#19396F] !font-bold !text-[14px] !rounded-lg !gap-2"
             >
-              Import Overtime Adjusted Amount
+              Import Processing on Holds
             </Button>
           </div>
           <input
@@ -296,4 +407,4 @@ const Overtime = () => {
   );
 };
 
-export default Overtime;
+export default SalaryPayout;

@@ -156,13 +156,13 @@ const ActionMenu = ({ rowId }) => {
             {/* Footer Buttons */}
             <div className="mt-6 flex justify-end gap-4">
               <button
-                className="rounded-md border border-[#19396F] px-5 py-2 text-sm font-medium text-[#19396F] font-[Poppins] cursor-pointer"
+                className="rounded-md border border-[#19396F] px-5 py-2 text-sm font-medium text-[#19396F] font-poppins cursor-pointer"
                 onClick={handleClose}
               >
                 Cancel
               </button>
               <button
-                className="rounded-md bg-[#19396F] px-5 py-2 text-sm font-medium text-white font-[Poppins] cursor-pointer"
+                className="rounded-md bg-[#19396F] px-5 py-2 text-sm font-medium text-white font-poppins cursor-pointer"
                 onClick={() => {
                   // Add confirm logic here
                   handleClose();
@@ -320,10 +320,10 @@ const NoAttendance = () => {
     <div className="flex flex-col gap-10">
       {/* Header */}
       <div className="w-full flex flex-col gap-6">
-        <p className="text-[16px] font-medium text-black font-[Poppins]">
+        <p className="text-[16px] font-medium text-black font-poppins">
           No Attendance
         </p>
-        <div className="w-full bg-[#EBF1FF] border-2 border-[#005377] text-[#19396F] font-normal text-[16px] rounded-xl py-2 px-3 font-[Poppins]">
+        <div className="w-full bg-[#EBF1FF] border-2 border-[#005377] text-[#19396F] font-normal text-[16px] rounded-xl py-2 px-3 font-poppins">
           Employees with 'No Attendance' on any day of the month can be seen
           below. Admin can take relevant action for such no attendance days.
         </div>
@@ -340,7 +340,7 @@ const NoAttendance = () => {
               variant="contained"
               size="small"
               sx={{ bgcolor: "#19396FB2", textTransform: "none" }}
-              className="!font-[Poppins] !py-[10px] !px-[16px] !text-white !font-bold !text-[14px] !rounded-lg"
+              className="!font-poppins !py-[10px] !px-[16px] !text-white !font-bold !text-[14px] !rounded-lg"
             >
               Approve
             </Button>
@@ -348,7 +348,7 @@ const NoAttendance = () => {
               variant="outlined"
               size="small"
               sx={{ bgcolor: "#F3F8FC", textTransform: "none" }}
-              className="!font-[Poppins] !border-0 !py-[10px] !px-[16px] !text-[#807D7E] !font-bold !text-[14px] !rounded-lg"
+              className="!font-poppins !border-0 !py-[10px] !px-[16px] !text-[#807D7E] !font-bold !text-[14px] !rounded-lg"
               style={{ boxShadow: " 0px 0px 12px 0px rgba(0, 0, 0, 0.16)" }}
             >
               Reject

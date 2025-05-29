@@ -182,7 +182,7 @@ const ExitProcess = () => {
     <div className="flex flex-col gap-10">
       {/* Header */}
       <div className="w-full flex flex-col gap-6">
-        <p className="text-[16px] font-medium text-black font-[Poppins]">
+        <p className="text-[16px] font-medium text-black font-poppins">
           Pending Exit Requests
         </p>
       

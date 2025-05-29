@@ -220,10 +220,10 @@ const LeaveApplied = () => {
     <div className="flex flex-col gap-10">
       {/* Header */}
       <div className="w-full flex flex-col gap-6">
-        <p className="text-[16px] font-medium text-black font-[Poppins]">
+        <p className="text-[16px] font-medium text-black font-poppins">
           Leave Applied
         </p>
-        <div className="w-full bg-[#EBF1FF] border-2 border-[#005377] text-[#19396F] font-normal text-[16px] rounded-xl py-2 px-3 font-[Poppins]">
+        <div className="w-full bg-[#EBF1FF] border-2 border-[#005377] text-[#19396F] font-normal text-[16px] rounded-xl py-2 px-3 font-poppins">
           All leave (approved or pending) that falls under this payroll cycle
           month will be displayed here.
         </div>
@@ -240,7 +240,7 @@ const LeaveApplied = () => {
               variant="contained"
               size="small"
               sx={{ bgcolor: "#19396FB2", textTransform: "none" }}
-              className="!font-[Poppins] !py-[10px] !px-[16px] !text-white !font-bold !text-[14px] !rounded-lg"
+              className="!font-poppins !py-[10px] !px-[16px] !text-white !font-bold !text-[14px] !rounded-lg"
             >
               Approve
             </Button>
@@ -248,7 +248,7 @@ const LeaveApplied = () => {
               variant="outlined"
               size="small"
               sx={{ bgcolor: "#F3F8FC", textTransform: "none" }}
-              className="!font-[Poppins] !border-0 !py-[10px] !px-[16px] !text-[#807D7E] !font-bold !text-[14px] !rounded-lg"
+              className="!font-poppins !border-0 !py-[10px] !px-[16px] !text-[#807D7E] !font-bold !text-[14px] !rounded-lg"
               style={{ boxShadow: " 0px 0px 12px 0px rgba(0, 0, 0, 0.16)" }}
             >
               Reject

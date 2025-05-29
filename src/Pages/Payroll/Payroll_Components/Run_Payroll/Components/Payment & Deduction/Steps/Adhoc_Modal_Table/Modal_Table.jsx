@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // MUI Imports
 import { DataGrid } from "@mui/x-data-grid";
@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import { Box, Card } from "@mui/material";
 
 // Local Import
-import CustomPagination from "../../../../../../../Components/Pagination";
+import CustomPagination from "../../../../../../../../Components/Pagination";
 
 // Sample Data
 const initialRows = [
@@ -14,25 +14,36 @@ const initialRows = [
     id: 1,
     employee: "Harsh Kumar",
     empId: "20020070",
-    dor: "12-Jul2024",
-    notice_period: "30 days",
-    exit_type: "Resigned",
-    reason: "Personal Reasons",
-    lasrworking_day: "15-dec-2025",
-    total_salary: "INR 1.00,706",
-    comment: "Yo",
+    Type: "Pay",
+    Amount: "1,000",
   },
   {
     id: 2,
     employee: "Harsh Kumar",
     empId: "20020070",
-    dor: "12-Jul2024",
-    notice_period: "30 days",
-    exit_type: "Resigned",
-    reason: "Personal Reasons",
-    lasrworking_day: "15-dec-2025",
-    total_salary: "INR 1.00,706",
-    comment: "Yo",
+    Type: "Pay",
+    Amount: "1,000",
+  },
+  {
+    id: 3,
+    employee: "Harsh Kumar",
+    empId: "20020070",
+    Type: "Pay",
+    Amount: "1,000",
+  },
+  {
+    id: 4,
+    employee: "Harsh Kumar",
+    empId: "20020070",
+    Type: "Pay",
+    Amount: "1,000",
+  },
+  {
+    id: 5,
+    employee: "Harsh Kumar",
+    empId: "20020070",
+    Type: "Pay",
+    Amount: "1,000",
   },
 ];
 
@@ -72,20 +83,13 @@ const StyledDataGrid = styled(DataGrid)(() => ({
 }));
 
 // Main Component
-const ExitProcess = () => {
+const Modal_Table = () => {
   const [searchText, setSearchText] = useState("");
   // Pagination state
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [rows, setRows] = useState([...initialRows]);
-
-  const handleChange = (id, field, value) => {
-    const updatedRows = rows.map((row) =>
-      row.id === id ? { ...row, [field]: value } : row
-    );
-    setRows(updatedRows);
-  };
 
   // ---------------------- Table -------------------
   const columns = [
@@ -105,52 +109,16 @@ const ExitProcess = () => {
       },
     },
     {
-      field: "dor",
-      headerName: "Date of Resignation",
-      flex: 0.7,
-      renderCell: (params) => {
-        const dor = params.row.dor || "-";
-        const period = params.row.notice_period || "-";
-        return (
-          <div className="flex flex-col leading-tight items-start justify-center h-full">
-            <span className="text-[#19396F] font-medium">{dor}</span>
-            <span className="text-xs text-[#818181]">{period}</span>
-          </div>
-        );
-      },
-    },
-    {
-      field: "exit_type",
-      headerName: "Exit Type & Reason",
+      field: "Type",
+      headerName: "Type",
       flex: 1,
-      renderCell: (params) => {
-        const exit = params.row.exit_type || "-";
-        const rea = params.row.reason || "-";
-        return (
-          <div className="flex flex-col leading-tight items-start justify-center h-full">
-            <span className="text-[#19396F] font-medium">{exit}</span>
-            <span className="text-xs text-[#818181]">{rea}</span>
-          </div>
-        );
-      },
+      renderCell: (params) => params.row.Type || "-",
     },
     {
-      field: "lasrworking_day",
-      headerName: "Last Working Day",
-      flex: 0.7,
-      renderCell: (params) => params.row.lasrworking_day || "-",
-    },
-    {
-      field: "total_salary",
-      headerName: "Total Salary",
-      flex: 0.7,
-      renderCell: (params) => params.row.total_salary || "-",
-    },
-     {
-      field: "comment",
-      headerName: "Comment",
-      flex: 0.7,
-      renderCell: (params) => params.row.comment || "-",
+      field: "Amount",
+      headerName: "Amount",
+      flex: 1,
+      renderCell: (params) => params.row.Amount || "-",
     },
   ];
 
@@ -180,20 +148,6 @@ const ExitProcess = () => {
 
   return (
     <div className="flex flex-col gap-10">
-      {/* Header */}
-      <div className="w-full flex flex-col gap-6">
-        <p className="text-[16px] font-medium text-black font-poppins">
-          Employee in Exit Process
-        </p>
-        <div className="w-full bg-[#EBF1FF] border-2 border-[#005377] text-[#19396F] font-normal text-[16px] rounded-xl py-2 px-3 font-poppins">
-          Employees whose exit has been approved and are serving notice period
-          will be shown under ‘Employee in Exit Process’. If there are any exit
-          requests that are yet to be approved but last working date fails under
-          this motnh (based on the notice period assigned) will be shown under
-          ‘Pending Exit Requests’.
-        </div>
-      </div>
-
       {/* Table & Actions */}
       <Card
         style={{ boxShadow: "0px 0px 12px 0px rgba(0, 0, 0, 0.16)" }}
@@ -210,18 +164,16 @@ const ExitProcess = () => {
         </div>
 
         {/* Table */}
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: "100%", height: 180, overflow: "auto" }}>
           <StyledDataGrid
-            key={JSON.stringify(rows)}
             rows={paginatedRows}
             columns={columns}
-            autoHeight
             pageSize={rowsPerPage}
-            rowsPerPageOptions={[5, 10, 15]}
+            hideFooterPagination
             disableSelectionOnClick
             disableColumnMenu
-            pagination={false}
-            hideFooterPagination
+            autoHeight={false} // Important: disable autoHeight to allow scrolling
+            rowHeight={32} // Optional: adjust row height for compact display
           />
         </Box>
         {/* Custom Pagination */}
@@ -238,4 +190,4 @@ const ExitProcess = () => {
   );
 };
 
-export default ExitProcess;
+export default Modal_Table;

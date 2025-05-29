@@ -203,10 +203,10 @@ const Claim = () => {
     <div className="flex flex-col gap-10">
       {/* Header */}
       <div className="w-full flex flex-col gap-6">
-        <p className="text-[16px] font-medium text-black font-[Poppins]">
+        <p className="text-[16px] font-medium text-black font-poppins">
           Salary Component Claim
         </p>
-        <div className="w-full bg-[#EBF1FF] border-2 border-[#005377] text-[#19396F] font-normal text-[16px] rounded-xl py-2 px-3 font-[Poppins]">
+        <div className="w-full bg-[#EBF1FF] border-2 border-[#005377] text-[#19396F] font-normal text-[16px] rounded-xl py-2 px-3 font-poppins">
           All pending or approved claims (both reimbursable and reimbursement) that are supposed to be in this month will be displayed here.
         </div>
       </div>

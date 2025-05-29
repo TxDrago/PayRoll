@@ -3,9 +3,9 @@ import { Stepper, Step, StepLabel, StepConnector, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 // --------------- Local Import -----------------
-import NewJoinee from "./Steps/NewJoinee";
-import FinalSettlement from "./Steps/FinalSettlement";
-import ExitProcess from "./Steps/ExitProcess";
+import SalaryProcessing from "./Steps/SalaryProcessing";
+import SalaryPayout from "./Steps/SalaryPayout";
+import Arrears from "./Steps/Arrears";
 
 // Connector styling
 const CustomConnector = styled(StepConnector)(({ theme }) => ({
@@ -50,12 +50,12 @@ function CustomStepIcon(props) {
 
 // Step labels
 const steps = [
-  "New Joinees",
-  "Employee Exit Process",
-  "Full & Final Settlement",
+  "Salary Processing on hold",
+  "Salary payout on hold",
+  "Arrears",
 ];
 
-export default function JoineeStepper() {
+export default function Hold_Salaries_Stepper() {
   const [activeStep, setActiveStep] = React.useState(2);
 
   const handleNext = () => {
@@ -69,11 +69,11 @@ export default function JoineeStepper() {
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return <NewJoinee />;
+        return <SalaryProcessing />;
       case 1:
-        return <ExitProcess />;
+        return <SalaryPayout />;
       case 2:
-        return <FinalSettlement />;
+        return <Arrears />;
       default:
         return null;
     }
@@ -84,7 +84,7 @@ export default function JoineeStepper() {
       {/* Header */}
       <div className="px-8 mb-5">
         <h2 className="text-lg font-medium text-black font-poppins">
-          New Joinee & Exit
+          Salary on Hold & Arrears: APR-2025
         </h2>
       </div>
 

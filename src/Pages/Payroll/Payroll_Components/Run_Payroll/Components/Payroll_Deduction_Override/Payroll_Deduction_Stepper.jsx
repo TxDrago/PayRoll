@@ -3,9 +3,10 @@ import { Stepper, Step, StepLabel, StepConnector, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 // --------------- Local Import -----------------
-import NewJoinee from "./Steps/NewJoinee";
-import FinalSettlement from "./Steps/FinalSettlement";
-import ExitProcess from "./Steps/ExitProcess";
+import PT_Override from "./Steps/PT_Override";
+import ESI_Override from "./Steps/ESI_Override";
+import TDS_Override from "./Steps/TDS_Override";
+import LWF_Override from "./Steps/LWF_Override";
 
 // Connector styling
 const CustomConnector = styled(StepConnector)(({ theme }) => ({
@@ -50,13 +51,14 @@ function CustomStepIcon(props) {
 
 // Step labels
 const steps = [
-  "New Joinees",
-  "Employee Exit Process",
-  "Full & Final Settlement",
+  "PT Override",
+  "ESI Override",
+  "TDS Override",
+  "LWF Override",
 ];
 
-export default function JoineeStepper() {
-  const [activeStep, setActiveStep] = React.useState(2);
+export default function Payroll_Deduction_Stepper() {
+  const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
     if (activeStep < steps.length - 1) setActiveStep((prev) => prev + 1);
@@ -69,11 +71,13 @@ export default function JoineeStepper() {
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return <NewJoinee />;
+        return <PT_Override />;
       case 1:
-        return <ExitProcess />;
+        return <ESI_Override />;
       case 2:
-        return <FinalSettlement />;
+        return <TDS_Override />;
+      case 3:
+        return <LWF_Override />;
       default:
         return null;
     }
@@ -84,7 +88,7 @@ export default function JoineeStepper() {
       {/* Header */}
       <div className="px-8 mb-5">
         <h2 className="text-lg font-medium text-black font-poppins">
-          New Joinee & Exit
+          Override (PT, ESI, TDS, LWF): APR-2025
         </h2>
       </div>
 
@@ -137,7 +141,7 @@ export default function JoineeStepper() {
           className="text-[14px] font-bold text-white font-poppins py-3 px-6 bg-[#005377] rounded-sm cursor-pointer"
           onClick={handleNext}
         >
-          {activeStep === 2 ? "Save & Finished" : "Save & Continue"}
+          {activeStep === 3 ? "Save & Finished" : "Save & Continue"}
         </button>
       </div>
     </div>
