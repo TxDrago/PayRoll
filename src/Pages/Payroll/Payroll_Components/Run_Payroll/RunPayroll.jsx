@@ -1,6 +1,6 @@
 // Required imports
 import React from "react";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // -------------- Icons -----------------
 import { ArrowRight } from "iconsax-react";
@@ -45,16 +45,32 @@ const steps = [
 ];
 
 export default function RunPayroll({ selectedMonthLabel }) {
+  const navigate = useNavigate();
   const totalSteps = 6;
   const completedSteps = 3;
   const percentage = (completedSteps / totalSteps) * 100;
   //   const navigate = useNavigate();
 
   const handleNavigate = (stepIndex) => {
-    console.log("Index", stepIndex);
     if (stepIndex === 0) {
-      console.log("Attendance");
+        navigate(`/payroll/attendance`);
     }
+    if (stepIndex === 1) {
+        navigate(`/payroll/onboarding`);
+    }
+    if (stepIndex === 2) {
+        navigate(`/payroll/compensation`);
+    }
+    if (stepIndex === 3) {
+        navigate(`/payroll/adjustments`);
+    }
+    if (stepIndex === 4) {
+        navigate(`/payroll/arrears`);
+    }
+    if (stepIndex === 5) {
+        navigate(`/payroll/overrides`);
+    }
+    
   };
 
   return (

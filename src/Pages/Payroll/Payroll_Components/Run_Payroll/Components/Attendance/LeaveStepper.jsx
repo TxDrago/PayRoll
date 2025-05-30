@@ -65,7 +65,7 @@ function CustomStepIcon(props) {
 const steps = ["Leave Applied", "No Attendance", "Lop Summary", "Lop Reversal"];
 
 export default function LeaveStepper() {
-  const [activeStep, setActiveStep] = React.useState(3);
+  const [activeStep, setActiveStep] = React.useState(0);
   const [modalOpen, setModalOpen] = useState(false);
 
   //---------------------------- Modal Open Button------------------------------------------------

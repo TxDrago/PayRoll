@@ -58,7 +58,7 @@ const steps = [
 ];
 
 export default function Payment_Deduction_Stepper() {
-  const [activeStep, setActiveStep] = React.useState(3);
+  const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
     if (activeStep < steps.length - 1) setActiveStep((prev) => prev + 1);

@@ -2,13 +2,10 @@ import React from "react";
 import { Tabs, Tab, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import clsx from "clsx";
+import Outstanding_Loans from "./Outstanding_Loans/Outstanding_Loans";
 
 // ------------------- Local Import ------------------------
-import AnalyticsDashboard from "./Components/Analytics/AnalyticsDashboard";
-import Compensation_Planning from "./Components/Compensation_Planning/Compensation_Planning";
-import Compare_Compensation from "./Components/Compare_Compensation_Costs/Compare_Compensation";
-import Employee_Competitiveness from "./Components/Employee_Competitiveness/Employee_Competitiveness";
-import Geographical_Differentials from "./Components/Geographical_Differentials/Geographical_Differentials";
+
 
 // Styled MUI Tab
 const CustomTab = styled(Tab)(() => ({
@@ -28,7 +25,7 @@ function TabPanel({ children, value, index }) {
   );
 }
 
-export default function Payroll_Analytics_Tabs() {
+export default function LoansTabs() {
   const [value, setValue] = React.useState(0); // Default: "Run Payroll"
 
   const handleChange = (event, newValue) => {
@@ -36,11 +33,9 @@ export default function Payroll_Analytics_Tabs() {
   };
 
   const tabs = [
-    "Analytics",
-    "Compensation Planning",
-    "Compare Compensation Costs",
-    "Employee Competitiveness",
-    "Geographical Differentials",
+    "Outstanding Loans",
+    "Closed Loans",
+    "Loan Requests",
   ];
 
   return (
@@ -84,25 +79,16 @@ export default function Payroll_Analytics_Tabs() {
               case 0:
                 return (
                   <div >
-                  <AnalyticsDashboard />
+                  <Outstanding_Loans />
                   </div>
                 );
               case 1:
-                return (<div><Compensation_Planning /></div>);
+                return (<div>Closed Loans</div>);
               case 2:
                 return (
-                  <div><Compare_Compensation /></div>
+                  <div>Loan Requests</div>
                 );
-              case 3:
-                return (
-                  <div >
-               <Employee_Competitiveness />
-                  </div>
-                );
-              case 4:
-                return (
-                  <div ><Geographical_Differentials /></div>
-                );
+              
               default:
                 return null;
             }

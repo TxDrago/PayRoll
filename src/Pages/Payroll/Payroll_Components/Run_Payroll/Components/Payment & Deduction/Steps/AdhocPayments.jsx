@@ -15,8 +15,6 @@ import {
   Fade,
   Typography,
 } from "@mui/material";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 
 import axios from "axios";
 
