@@ -28,7 +28,7 @@ function TabPanel({ children, value, index }) {
 }
 
 export default function PayrollTabs() {
-  const [value, setValue] = React.useState(0); // Default: "Run Payroll"
+  const [value, setValue] = React.useState(4); 
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

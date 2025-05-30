@@ -2,9 +2,11 @@ import React from "react";
 import { Tabs, Tab, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import clsx from "clsx";
-import Outstanding_Loans from "./Outstanding_Loans/Outstanding_Loans";
-
 // ------------------- Local Import ------------------------
+import Outstanding_Loans from "./Outstanding_Loans/Outstanding_Loans";
+import Closed_Loans from "./Closed_Loans/Closed_Loans";
+import Loan_Requests from "./Closed_Loans/Loan_Requests/Loan_Requests";
+
 
 
 // Styled MUI Tab
@@ -26,7 +28,7 @@ function TabPanel({ children, value, index }) {
 }
 
 export default function LoansTabs() {
-  const [value, setValue] = React.useState(0); // Default: "Run Payroll"
+  const [value, setValue] = React.useState(1); // Default: "Run Payroll"
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -83,10 +85,10 @@ export default function LoansTabs() {
                   </div>
                 );
               case 1:
-                return (<div>Closed Loans</div>);
+                return (<div><Closed_Loans /></div>);
               case 2:
                 return (
-                  <div>Loan Requests</div>
+                  <div><Loan_Requests /></div>
                 );
               
               default:

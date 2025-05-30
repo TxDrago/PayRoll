@@ -3,7 +3,7 @@ import { Box,Typography, Modal,
   Fade } from "@mui/material";
   
   // -------------- Icons -----------------
-  import { Add, CloseSquare, Trash } from "iconsax-react";
+  import {CloseSquare} from "iconsax-react";
 
   //---------------- Local Imports ------------------
 import LoansTabs from "./Components/LoansTabs";

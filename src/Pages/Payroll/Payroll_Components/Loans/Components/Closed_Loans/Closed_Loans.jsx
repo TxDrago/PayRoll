@@ -22,7 +22,7 @@ import { PiDotsThreeOutlineVerticalLight } from "react-icons/pi";
 
 // Local Import
 import CustomPagination from "../../../../../../Components/Pagination";
-import Edit_Loan_Modal from "./EditLoanModal/Edit_Loan_Modal";
+import Closed_Modal from "./Modal/Closed_Modal";
 
 // Sample Data
 const rows = [
@@ -158,7 +158,7 @@ const MultiSelectDropdown = ({
   );
 };
 // Main Component
-const Outstanding_Loans = () => {
+const Closed_Loans = () => {
   const [searchText, setSearchText] = useState("");
   // Pagination state
   const [page, setPage] = useState(1);
@@ -206,14 +206,7 @@ const Outstanding_Loans = () => {
     setSelectedRow(null);
   };
 
-  const handleMenuClick = (action) => {
-    if (action === "edit") {
-      setOpen(true);
-    } else if (action === "cancel") {
-      console.log("Cancel row:", selectedRow);
-    }
-    handleMenuClose();
-  };
+
 
   // ---------------------- Table -------------------
   const columns = [
@@ -344,16 +337,16 @@ const Outstanding_Loans = () => {
   return (
     <div className="flex flex-col gap-10">
       {/* ---------------------------------- Edit Modal ---------------------------- */}
-      <Edit_Loan_Modal open={open} onClose={() => setOpen(false)} />
+      <Closed_Modal open={open} onClose={() => setOpen(false)} />
       {/* Header */}
       <div className="w-full flex flex-col gap-6">
         <Box className="flex justify-between items-center  gap-3">
           <Box className="flex flex-col gap-1.5">
             <Typography className="!font-poppins !font-semibold !text-lg">
-              Outstanding Loans
+              Loans Closed
             </Typography>
             <Typography className="font-poppins !text-[16px] text-[#818181]">
-              These are the outstanding loans
+              These are the Closed loans
             </Typography>
           </Box>
           <Box>
@@ -437,17 +430,12 @@ const Outstanding_Loans = () => {
           }}
         >
           <MenuItem
-            onClick={() => handleMenuClick("edit")}
+            // onClick={() => handleMenuClick("edit")}
             className="!text-black hover:!bg-[#005377] hover:!text-white !rounded-2xl "
           >
-            Edit
+            View
           </MenuItem>
-          <MenuItem
-            onClick={() => handleMenuClick("cancel")}
-            className="!text-black hover:!bg-[#005377] hover:!text-white !rounded-2xl"
-          >
-            Cancel
-          </MenuItem>
+         
         </Menu>
 
         {/* Custom Pagination */}
@@ -464,4 +452,4 @@ const Outstanding_Loans = () => {
   );
 };
 
-export default Outstanding_Loans;
+export default Closed_Loans;

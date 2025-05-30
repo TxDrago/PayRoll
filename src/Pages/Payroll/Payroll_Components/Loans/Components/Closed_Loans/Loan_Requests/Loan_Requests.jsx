@@ -158,7 +158,7 @@ const MultiSelectDropdown = ({
   );
 };
 // Main Component
-const Outstanding_Loans = () => {
+const Loan_Requests = () => {
   const [searchText, setSearchText] = useState("");
   // Pagination state
   const [page, setPage] = useState(1);
@@ -207,9 +207,9 @@ const Outstanding_Loans = () => {
   };
 
   const handleMenuClick = (action) => {
-    if (action === "edit") {
+    if (action === "Approve") {
       setOpen(true);
-    } else if (action === "cancel") {
+    } else if (action === "Reject") {
       console.log("Cancel row:", selectedRow);
     }
     handleMenuClose();
@@ -350,10 +350,10 @@ const Outstanding_Loans = () => {
         <Box className="flex justify-between items-center  gap-3">
           <Box className="flex flex-col gap-1.5">
             <Typography className="!font-poppins !font-semibold !text-lg">
-              Outstanding Loans
+              Loan Requests
             </Typography>
             <Typography className="font-poppins !text-[16px] text-[#818181]">
-              These are the outstanding loans
+              These are the Loan Requests
             </Typography>
           </Box>
           <Box>
@@ -437,16 +437,16 @@ const Outstanding_Loans = () => {
           }}
         >
           <MenuItem
-            onClick={() => handleMenuClick("edit")}
+            onClick={() => handleMenuClick("Approve")}
             className="!text-black hover:!bg-[#005377] hover:!text-white !rounded-2xl "
           >
-            Edit
+            Approve
           </MenuItem>
           <MenuItem
             onClick={() => handleMenuClick("cancel")}
             className="!text-black hover:!bg-[#005377] hover:!text-white !rounded-2xl"
           >
-            Cancel
+            Reject
           </MenuItem>
         </Menu>
 
@@ -464,4 +464,4 @@ const Outstanding_Loans = () => {
   );
 };
 
-export default Outstanding_Loans;
+export default Loan_Requests;
