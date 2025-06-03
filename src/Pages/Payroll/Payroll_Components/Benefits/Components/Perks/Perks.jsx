@@ -3,13 +3,12 @@ import React, { useState } from "react";
 // MUI Imports
 import { DataGrid } from "@mui/x-data-grid";
 import {
-  Select,
   MenuItem,
   Box,
   Card,
   Typography,
   Menu,
-  IconButton,
+  IconButton, Button, TextField
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -90,7 +89,7 @@ const Perks = () => {
   const [searchText, setSearchText] = useState("");
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -171,7 +170,6 @@ const Perks = () => {
     },
   ];
 
-
   const filteredRows = rows.filter((row) =>
     `${row.employee} ${row.empId}`
       .toLowerCase()
@@ -196,49 +194,127 @@ const Perks = () => {
   };
 
   return (
-    <div className="flex flex-col gap-10">
+    <Box  sx={{display:"flex", flexDirection:"column", gap:"40px"}}>
       {/* Header */}
-      <div className="w-full flex flex-col gap-6">
-        <Box className="flex justify-between items-start flex-col gap-6">
-          <Typography className="!font-poppins !font-semibold !text-lg">
-            Perks & Employee Assignment
-          </Typography>
-          <Box className="flex w-full justify-between items-center gap-6">
-            <Box className="flex flex-col gap-1.5">
-              <Typography className="!font-poppins !font-medium !text-[16px]">
-                Perks
-              </Typography>
-              <Typography className="font-poppins !text-[16px] text-[#818181]">
-                Perquisites are non-wage compensation/benefits provided to
-                employees in addition to their salaries
-              </Typography>
-            </Box>
-            <Box>
-              <button
-                onClick={() => setOpen(true)}
-                className="flex gap-2 items-center !font-poppins !rounded-lg !bg-[#003049] !text-white !text-sm !normal-case hover:bg-[#00263b] px-6 py-3 cursor-pointer"
-              >
-                <span>Add Perks</span>
-              </button>
+      <Box sx={{ width: "100%" }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              flexDirection: "column",
+              gap: 6,
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: "Poppins",
+                fontWeight: 600,
+                fontSize: "1.125rem", // equivalent to text-lg
+              }}
+            >
+              Perks & Employee Assignment
+            </Typography>
+
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "space-between",
+                alignItems: "center",
+                gap: 6,
+              }}
+            >
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
+                <Typography
+                  sx={{
+                    fontFamily: "Poppins",
+                    fontWeight: 500,
+                    fontSize: "16px",
+                  }}
+                >
+                  Perks
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: "Poppins",
+                    fontSize: "16px",
+                    color: "#818181",
+                  }}
+                >
+                  Perquisites are non-wage compensation/benefits provided to
+                  employees in addition to their salaries
+                </Typography>
+              </Box>
+
+              <Box>
+                <Button
+                  onClick={() => setOpen(true)}
+                  sx={{
+                    display: "flex",
+                    gap: 2,
+                    alignItems: "center",
+                    fontFamily: "Poppins",
+                    borderRadius: "8px",
+                    backgroundColor: "#003049",
+                    color: "#fff",
+                    textTransform: "none",
+                    fontSize: "0.875rem", // text-sm
+                    px: 4,
+                    py: 2,
+                    "&:hover": {
+                      backgroundColor: "#00263b",
+                    },
+                    cursor: "pointer",
+                  }}
+                >
+                  <span>Add Perks</span>
+                </Button>
+              </Box>
             </Box>
           </Box>
         </Box>
-      </div>
+      </Box>
 
       {/* Table Section */}
-      <Card
-        style={{ boxShadow: "0px 0px 12px 0px rgba(0, 0, 0, 0.16)" }}
-        className="!p-5 !bg-white !rounded-lg !w-full"
-      >
-        <div className="flex items-center justify-end mb-6">
-          <input
-            type="text"
-            placeholder="Search by perk name"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            className="w-[375px] rounded-lg shadow-[0px_0px_12px_0px_rgba(0,0,0,0.16)] px-4 py-2 focus:outline-none border border-[#c9c8c8]"
-          />
-        </div>
+     <Card
+  sx={{
+    p: 5,
+    bgcolor: 'white',
+    borderRadius: '12px',
+    width: '100%',
+    boxShadow: '0px 0px 12px 0px rgba(0, 0, 0, 0.16)',
+  }}
+>
+  <Box
+    sx={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      mb: 6,
+    }}
+  >
+    <TextField
+      type="text"
+      placeholder="Search......"
+      value={searchText}
+      onChange={(e) => setSearchText(e.target.value)}
+      variant="outlined"
+      sx={{
+        width: 375,
+        borderRadius: '8px',
+        backgroundColor: '#fff',
+        boxShadow: '0px 0px 12px 0px rgba(0, 0, 0, 0.16)',
+        '& .MuiOutlinedInput-root': {
+          borderRadius: '8px',
+        },
+        '& fieldset': {
+          borderColor: '#c9c8c8',
+        },
+      }}
+    />
+  </Box>
 
         <Box sx={{ width: "100%" }}>
           <StyledDataGrid
@@ -269,19 +345,19 @@ const Perks = () => {
         </Menu>
 
         {/* Custom Pagination */}
-              <CustomPagination
-                page={page}
-                totalPages={totalPages}
-                rowsPerPage={rowsPerPage}
-                rowsCount={filteredRows.length}
-                onPageChange={handlePageChange}
-                onRowsPerPageChange={handleRowsPerPageChange}
-              />
+        <CustomPagination
+          page={page}
+          totalPages={totalPages}
+          rowsPerPage={rowsPerPage}
+          rowsCount={filteredRows.length}
+          onPageChange={handlePageChange}
+          onRowsPerPageChange={handleRowsPerPageChange}
+        />
       </Card>
 
       {/* Add Perk Modal */}
       <AddPerkModal open={open} onClose={() => setOpen(false)} />
-    </div>
+    </Box>
   );
 };
 

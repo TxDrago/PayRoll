@@ -1,10 +1,11 @@
 import React from "react";
-import { Tabs, Tab, Box } from "@mui/material";
+import { Tabs, Tab, Box, } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import clsx from "clsx";
 // ------------------- Local Import ------------------------
 import Perks from "./Components/Perks/Perks";
 import Assignment from "./Components/Assignment/Assignment";
+import AirTicket from "./Components/Air_Ticket/AirTicket";
 
 // Styled MUI Tab
 const CustomTab = styled(Tab)(() => ({
@@ -25,7 +26,7 @@ function TabPanel({ children, value, index }) {
 }
 
 export default function Benefits_Tabs() {
-  const [value, setValue] = React.useState(0); // Default: "Run Payroll"
+  const [value, setValue] = React.useState(2); // Default: "Run Payroll"
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -86,7 +87,7 @@ export default function Benefits_Tabs() {
              case 2:
                 return (
                   <div>
-                    {/* <Closed_Loans /> */}
+                    <AirTicket />
                   </div>
                 );
 
