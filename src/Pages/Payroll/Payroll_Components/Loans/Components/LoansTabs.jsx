@@ -5,7 +5,7 @@ import clsx from "clsx";
 // ------------------- Local Import ------------------------
 import Outstanding_Loans from "./Outstanding_Loans/Outstanding_Loans";
 import Closed_Loans from "./Closed_Loans/Closed_Loans";
-import Loan_Requests from "./Closed_Loans/Loan_Requests/Loan_Requests";
+import Loan_Requests from "./Loan_Requests/Loan_Requests";
 
 
 

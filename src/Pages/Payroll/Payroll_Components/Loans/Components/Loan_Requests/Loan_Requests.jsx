@@ -22,7 +22,7 @@ import { PiDotsThreeOutlineVerticalLight } from "react-icons/pi";
 
 // Local Import
 import CustomPagination from "../../../../../../Components/Pagination";
-import Edit_Loan_Modal from "./EditLoanModal/Edit_Loan_Modal";
+
 
 // Sample Data
 const rows = [
@@ -343,8 +343,7 @@ const Loan_Requests = () => {
 
   return (
     <div className="flex flex-col gap-10">
-      {/* ---------------------------------- Edit Modal ---------------------------- */}
-      <Edit_Loan_Modal open={open} onClose={() => setOpen(false)} />
+     
       {/* Header */}
       <div className="w-full flex flex-col gap-6">
         <Box className="flex justify-between items-center  gap-3">

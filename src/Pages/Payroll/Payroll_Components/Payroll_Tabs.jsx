@@ -5,6 +5,7 @@ import clsx from "clsx";
 import PayrollGroup from "./Run_Payroll/PayrollGroup";
 import Payroll_Analytics_Tabs from "./Payroll_ Analytics/Payroll_Analytics_Tabs";
 import Loans from "./Loans/Loans";
+import Benefits_Tabs from "./Benefits/Benefits_Tabs";
 
 // Styled MUI Tab
 const CustomTab = styled(Tab)(() => ({
@@ -28,7 +29,7 @@ function TabPanel({ children, value, index }) {
 }
 
 export default function PayrollTabs() {
-  const [value, setValue] = React.useState(4); 
+  const [value, setValue] = React.useState(5); 
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -105,12 +106,12 @@ export default function PayrollTabs() {
                 );
               case 4:
                 return (
-                  <div className="text-gray-700"><Loans /></div>
+                  <div><Loans /></div>
                 );
               case 5:
                 return (
-                  <div className="text-gray-700">
-                    🎁 Employee Benefits Overview
+                  <div>
+                    <Benefits_Tabs />
                   </div>
                 );
               case 6:
