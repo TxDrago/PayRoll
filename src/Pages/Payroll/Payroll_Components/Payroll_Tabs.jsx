@@ -6,6 +6,7 @@ import PayrollGroup from "./Run_Payroll/PayrollGroup";
 import Payroll_Analytics_Tabs from "./Payroll_ Analytics/Payroll_Analytics_Tabs";
 import Loans from "./Loans/Loans";
 import Benefits_Tabs from "./Benefits/Benefits_Tabs";
+import Reports_Tabs from "./Reports/Reports_Tabs";
 
 // Styled MUI Tab
 const CustomTab = styled(Tab)(() => ({
@@ -29,7 +30,7 @@ function TabPanel({ children, value, index }) {
 }
 
 export default function PayrollTabs() {
-  const [value, setValue] = React.useState(5); 
+  const [value, setValue] = React.useState(6); 
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -116,8 +117,8 @@ export default function PayrollTabs() {
                 );
               case 6:
                 return (
-                  <div className="text-gray-700">
-                    📄 Payroll Reports Section
+                  <div >
+                    📄 <Reports_Tabs />
                   </div>
                 );
               case 7:
