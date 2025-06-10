@@ -35,9 +35,10 @@ const initialReports = [
 ];
 
 const ReportsHome = () => {
+  const [selectedReport, setSelectedReport] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [reports, setReports] = useState(initialReports);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const toggleFavorite = (id) => {
     setReports((prev) =>
@@ -149,7 +150,6 @@ const ReportsHome = () => {
           >
             {filteredReports.map((report) => (
               <Box
-              
                 key={report.id}
                 sx={{
                   p: 2,
@@ -163,8 +163,12 @@ const ReportsHome = () => {
                   borderRadius: "8px",
                   alignItems: "start",
                   gap: 1,
+                  cursor:"pointer"
                 }}
-                
+                onClick={() => {
+                  setSelectedReport(report);
+                  setOpen(true);
+                }}
               >
                 <Box>
                   <Typography fontWeight={600}>{report.title}</Typography>
@@ -183,7 +187,7 @@ const ReportsHome = () => {
                       ""
                     )}
                   </IconButton>
-                  <IconButton sx={{ p: 0 }} onClick={()=>setOpen(true)}>
+                  <IconButton sx={{ p: 0 }}>
                     <MoreVertIcon />
                   </IconButton>
                 </Box>
@@ -192,8 +196,8 @@ const ReportsHome = () => {
           </Box>
         </Box>
       </Box>
-      {/* Add Perk Modal */}
-      <ReportModal open={open} onClose={() => setOpen(false)} />
+      {/* Report Modal */}
+      <ReportModal open={open} onClose={() => setOpen(false)} report={selectedReport} />
     </>
   );
 };

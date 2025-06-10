@@ -1,13 +1,8 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Typography,
-  TextField,
-  IconButton,
-} from "@mui/material";
+import { Box, Typography, TextField, IconButton } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import ReportModal from "./Report_Modal/ReportModal";
 
 const initialReports = [
   {
@@ -39,8 +34,10 @@ const initialReports = [
 ];
 
 const PayrollReports = () => {
+  const [selectedReport, setSelectedReport] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [reports, setReports] = useState(initialReports);
+  const [open, setOpen] = useState(true);
 
   const toggleFavorite = (id) => {
     setReports((prev) =>
@@ -64,7 +61,7 @@ const PayrollReports = () => {
           mb={3}
         >
           <Typography variant="h6" fontWeight={600}>
-            Payroll Reports
+          Payroll Reports
           </Typography>
           <TextField
             variant="outlined"
@@ -75,6 +72,7 @@ const PayrollReports = () => {
             onChange={(e) => setSearchText(e.target.value)}
           />
         </Box>
+
 
         {/* Contain */}
         <Box sx={{ width: "100%" }}>
@@ -102,6 +100,11 @@ const PayrollReports = () => {
                   borderRadius: "8px",
                   alignItems: "start",
                   gap: 1,
+                  cursor:"pointer"
+                }}
+                onClick={() => {
+                  setSelectedReport(report);
+                  setOpen(true);
                 }}
               >
                 <Box>
@@ -130,6 +133,8 @@ const PayrollReports = () => {
           </Box>
         </Box>
       </Box>
+      {/* Report Modal */}
+      <ReportModal open={open} onClose={() => setOpen(false)} report={selectedReport} />
     </>
   );
 };

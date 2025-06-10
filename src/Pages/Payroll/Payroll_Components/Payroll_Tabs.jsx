@@ -7,6 +7,7 @@ import Payroll_Analytics_Tabs from "./Payroll_ Analytics/Payroll_Analytics_Tabs"
 import Loans from "./Loans/Loans";
 import Benefits_Tabs from "./Benefits/Benefits_Tabs";
 import Reports_Tabs from "./Reports/Reports_Tabs";
+import Settings_Tabs from "./Payroll_Settings/Settings_Tabs";
 
 // Styled MUI Tab
 const CustomTab = styled(Tab)(() => ({
@@ -30,7 +31,7 @@ function TabPanel({ children, value, index }) {
 }
 
 export default function PayrollTabs() {
-  const [value, setValue] = React.useState(6); 
+  const [value, setValue] = React.useState(7); 
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -122,7 +123,9 @@ export default function PayrollTabs() {
                   </div>
                 );
               case 7:
-                return <div className="text-gray-700">⚙️ Settings Panel</div>;
+                return <div >
+                  <Settings_Tabs />
+                </div>;
               default:
                 return null;
             }
